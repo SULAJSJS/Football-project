@@ -1,0 +1,48 @@
+$width1: 752px;
+
+.header {
+  display: flex;
+  gap: 80px;
+  max-width: 1440px;
+  justify-content: center;
+  height: auto;
+  @media (max-width: $width1) {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  @media (max-width: $width1) {
+    justify-content: space-between;
+    width: 100%;
+    gap: 0px;
+  }
+}
+
+.removeFilter {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Roboto';
+  p {
+    @media (max-width: $width1) {
+      font-size: 13px;
+      width: 100px;
+    }
+  }
+}
+
+.log_out {
+  display: flex;
+  @media (max-width: $width1) {
+    display: none;
+  }
+}
+.logout {
+  display: none;
+  @media (max-width: $width1) {
+    display: flex;
+  }
+}

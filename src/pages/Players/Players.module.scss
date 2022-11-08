@@ -1,0 +1,15 @@
+.data {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  width: 800px;
+  overflow: auto;
+}
+
+.scroll {
+  width: 800px;
+  overflow: auto;
+  @media (max-width: 800px) {
+    width: 370px;
+  }
+}

@@ -1,0 +1,64 @@
+$width: 1090px;
+$width1: 752px;
+$width2: 502px;
+$width3: 1090px;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 65px;
+  margin-bottom: 100px;
+  @media (max-width: $width1) {
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+  }
+  @media (max-width: $width) {
+    place-items: center;
+  }
+  @media (max-width: $width2) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.card {
+  width: 354px;
+  height: 118px;
+  margin-top: 30px;
+  @media (max-width: $width) {
+    margin-top: 10px;
+    width: 213px;
+    height: 167px;
+  }
+  @media (max-width: $width2) {
+    margin-top: 10px;
+    width: 273px;
+    height: 168px;
+  }
+}
+
+.flex {
+  height: 130px;
+  @media (max-width: $width) {
+    gap: 10px;
+  }
+  @media (max-width: $width2) {
+    height: 160px;
+  }
+}
+
+.title {
+  h5 {
+    font-size: 20px;
+    font-weight: 400;
+    // width: 120px;
+    @media (max-width: $width) {
+      font-size: 17px;
+    }
+  }
+}
+
+.hover:hover {
+  background-color: rgb(8, 159, 0);
+  transition: 0.4s;
+}
