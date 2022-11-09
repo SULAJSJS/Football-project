@@ -1,11 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPlayersFromLS } from '../../utils/getTeamsFromLS';
 import { fetchPlayers } from './playersAsyncAction';
 
-const { data } = getPlayersFromLS();
-
 const initialState = {
-  data,
+  data: localStorage.getItem('players') || [],
   status: 'loading',
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Logout, RotateLeft } from '@mui/icons-material';
 import Filter from '../../components/Filter';
 import Input from '../../components/Input';
@@ -9,19 +9,17 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { UserAuth } from '../../context/AuthContext';
 import { setCategotyId, setFilters, setTeams } from '../../store/teams/teams';
-import { getTeamsFromLS } from '../../utils/getTeamsFromLS';
 import qs from 'qs';
 import styles from './Home.module.scss';
-import { fetchTeams } from '../../store/teams/teamsAsyncAction';
+import { fetchDivisions, fetchTeams } from '../../store/teams/teamsAsyncAction';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { page, categoryId } = useSelector(teamSelector);
+  const { page, categoryId, limit } = useSelector(teamSelector);
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
   const { user, logOut } = UserAuth();
-  const { teams, limit } = getTeamsFromLS();
 
   const handleSignOut = async () => {
     try {
@@ -31,27 +29,43 @@ const Home = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify(
-        page > 0 ? { division: categoryId, offset: page } : { division: categoryId },
+        page > 0
+          ? { division: categoryId, offset: page }
+          : categoryId !== null
+          ? { division: categoryId }
+          : {},
       );
       navigate(`?${queryString}`);
     }
+    console.log('first', categoryId);
     isMounted.current = true;
   }, [categoryId, page]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       dispatch(
         setFilters({
-          division: params.division,
-          offset: params.offset,
+          ...params,
         }),
       );
       isSearch.current = true;
     }
+  }, []);
+
+  useEffect(() => {
+    if (!isSearch.current) {
+      dispatch(fetchTeams({ page, limit, categoryId }));
+    }
+
+    isSearch.current = false;
+  }, [page, limit, categoryId]);
+
+  useEffect(() => {
+    dispatch(fetchDivisions());
   }, []);
 
   return (

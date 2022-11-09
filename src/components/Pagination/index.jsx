@@ -1,7 +1,5 @@
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import ReactPaginate from 'react-paginate';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { teamSelector } from '../../store/teams/selectors';
 import { setCount, setPage } from '../../store/teams/teams';
@@ -13,8 +11,8 @@ const Pagination = () => {
   const backRef = React.useRef();
   const forwardRef = React.useRef();
 
+  const num = count - (count % limit);
   const handlePageForward = () => {
-    const num = count - (count % limit);
     if (page < num) {
       return dispatch(setPage(page + 12));
     } else {
@@ -44,10 +42,10 @@ const Pagination = () => {
           </p>
         </li>
         <li
-          style={{ background: page === 72 ? 'none' : 'rgb(0, 82, 53)', color: 'grey' }}
+          style={{ background: page === num ? 'none' : 'rgb(0, 82, 53)', color: 'grey' }}
           ref={forwardRef}
           onClick={handlePageForward}>
-          <p style={{ color: page === 72 ? 'grey' : '#fff' }}>
+          <p style={{ color: page === num ? 'grey' : '#fff' }}>
             <ArrowForwardIos fontSize="small" />
           </p>
         </li>

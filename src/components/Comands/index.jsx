@@ -11,32 +11,24 @@ import Skeleton from '../Skeleton';
 import styles from './Comands.module.scss';
 
 const Comands = () => {
-  const { teams, status, page, categoryId, limit } = useSelector(teamSelector);
+  const { teams, status } = useSelector(teamSelector);
   const dispatch = useDispatch();
   const isMounted = React.useRef(false);
-  const data = teams?.results;
-  useEffect(() => {
-    dispatch(fetchTeams({ page, limit, categoryId }));
-  }, [page, limit, categoryId]);
-
-  useEffect(() => {
-    dispatch(fetchDivisions());
-  }, []);
 
   React.useEffect(() => {
     if (isMounted.current) {
-      const json = JSON.stringify(data);
+      const json = JSON.stringify(teams?.results);
       localStorage.setItem('teams', json);
     }
     isMounted.current = true;
-  }, [data]);
+  }, [teams?.results]);
 
   return (
     <div style={{ maxWidth: '1100px', margin: 'auto' }}>
       <div className={styles.grid}>
         {status === 'loading'
           ? [...new Array(12)].map((_, id) => <Skeleton key={id} />)
-          : data?.map((item, id) => (
+          : teams?.results?.map((item, id) => (
               <Box className={styles.card} key={id}>
                 <Box
                   display={'flex'}

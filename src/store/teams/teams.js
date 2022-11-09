@@ -1,15 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchDivisions, fetchTeams } from './teamsAsyncAction';
-import { getTeamsFromLS } from '../../utils/getTeamsFromLS';
-import { getDivisionsFromLS } from '../../utils/getDivisionsFromLS';
-
-const { teams } = getTeamsFromLS();
-const { divisions } = getDivisionsFromLS();
 
 const initialState = {
-  teams,
-  divisions,
-  categoryId: null,
+  teams: JSON.parse(localStorage.getItem('teams')) || [],
+  divisions: JSON.parse(localStorage.getItem('divisions')) || [],
+  categoryId: 13,
   status: 'loading',
   search: '',
   page: 0,
@@ -37,8 +32,8 @@ export const teamsSlice = createSlice({
       state.categoryId = action.payload;
     },
     setFilters(state, action) {
-      state.page = action.payload.page;
-      state.categoryId = action.payload.categoryId;
+      state.page = Number(action.payload.page);
+      state.categoryId = Number(action.payload.categoryId);
     },
     setCount(state, action) {
       state.count = action.payload;
