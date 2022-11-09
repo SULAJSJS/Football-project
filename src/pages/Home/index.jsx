@@ -47,11 +47,7 @@ const Home = () => {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-      dispatch(
-        setFilters({
-          ...params,
-        }),
-      );
+      dispatch(setFilters(params.division, params.offset));
       isSearch.current = true;
     }
   }, []);

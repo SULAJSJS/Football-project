@@ -32,8 +32,8 @@ export const teamsSlice = createSlice({
       state.categoryId = action.payload;
     },
     setFilters(state, action) {
-      state.page = Number(action.payload.page);
-      state.categoryId = Number(action.payload.categoryId);
+      state.page = action.payload.page;
+      state.categoryId = action.payload;
     },
     setCount(state, action) {
       state.count = action.payload;
