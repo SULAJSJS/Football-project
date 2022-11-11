@@ -5,29 +5,37 @@ import Input from '../../components/Input';
 import Comands from '../../components/Comands';
 import { useDispatch, useSelector } from 'react-redux';
 import { teamSelector } from '../../store/teams/selectors';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { UserAuth } from '../../context/AuthContext';
 import { setCategotyId, setFilters, setTeams } from '../../store/teams/teams';
 import qs from 'qs';
 import styles from './Home.module.scss';
 import { fetchDivisions, fetchTeams } from '../../store/teams/teamsAsyncAction';
+import { useAuth } from '../../hooks/useAuth';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const { isAuth, isUser, email } = useAuth();
+  const { user } = useSelector((state) => state.auth);
   const { page, categoryId, limit } = useSelector(teamSelector);
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const { user, logOut } = UserAuth();
 
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const logOut = () => {
+  //   signOut(auth);
+  // };
+
+  // const handleSignOut = async () => {
+  //   try {
+  //     await logOut();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  console.log(user);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -64,18 +72,14 @@ const Home = () => {
     dispatch(fetchDivisions());
   }, []);
 
-  return (
+  return isAuth ? (
     <>
       <div className={styles.header}>
-        {user?.displayName ? (
-          <div className={styles.logout} style={{ marginLeft: '20px' }}>
-            <Button onClick={handleSignOut} variant="contained" endIcon={<Logout />}>
-              Выйти
-            </Button>
-          </div>
-        ) : (
-          ''
-        )}
+        {/* <div className={styles.logout} style={{ marginLeft: '20px' }}>
+          <Button variant="contained" endIcon={<Logout />}>
+            Выйти
+          </Button>
+        </div> */}
         <Input />
         <div className={styles.filters}>
           <Filter />
@@ -97,19 +101,17 @@ const Home = () => {
             <RotateLeft />
             <p>Сбросить фильтр</p>
           </Button>
-          {user?.displayName ? (
-            <div className={styles.log_out} style={{ marginLeft: '20px', height: '40px' }}>
-              <Button onClick={handleSignOut} variant="contained" endIcon={<Logout />}>
-                Выйти
-              </Button>
-            </div>
-          ) : (
-            ''
-          )}
+          {/* <div className={styles.log_out} style={{ marginLeft: '20px', height: '40px' }}>
+            <Button onClick={handleSignOut} variant="contained" endIcon={<Logout />}>
+              Выйти
+            </Button>
+          </div> */}
         </div>
       </div>
       <Comands />
     </>
+  ) : (
+    <Navigate to="/signin" />
   );
 };
 
